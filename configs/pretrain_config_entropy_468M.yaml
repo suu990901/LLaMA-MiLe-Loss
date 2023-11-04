@@ -1,0 +1,37 @@
+data:
+  mode: "pretrain"
+  tokenizer_model_path: "/nlp_group/suzhenpeng/Llama-InfoEntropy/configs/tokenizer_models"
+  domain_config_path: "configs/pile_sampling_rates.json"
+  dataset_dir: "./proc_pile_2048"
+  dataset_name: "pile"
+  max_train_samples: null
+  add_domain_id: False
+  tmp_file: null
+  seq_length: 1024
+  seed: 111
+  concat_multiple_sequence: False
+  num_sequences: 10
+  dynamically_interleave: True
+train:
+  train_batch_size: 32
+  num_training_steps: 200000
+  num_warmup_steps: 2000
+  initializer_range: 1.0e-2
+  lr: 3.0e-4
+  weight_decay: 1.0e-1
+  ckpt: null
+  train_num_workers: 32
+  gradient_accumulation_steps: 2
+  prefetch_factor: 200
+  train_and_eval: True
+  gradient_checkpointing_enable: False
+  use_lora: False
+loss:
+  use_loss: entropy_loss
+  gamma: 1.0
+log_interval: 5
+eval_interval: 5000
+save_interval: 1000
+work_dir: "models/saved_ckpt_468M/entropy_loss"
+project_name: "LLAMA_InfoEntropy_468M_1024"
+run_name: "468M_entropy"
