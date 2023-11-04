@@ -170,14 +170,3 @@ python main.py \
     --decontamination_ngrams_path path/containing/training/set/ngrams \
     --device cuda:0
 ```
-
-## 转换ckpt
-1. 修改 convert_ckpt.sh的base_dir，config_path，tokenizer_path
-2. bash convert_ckpt.sh , 可以转换base_dir下的所有ckpt
-
-## eval
-
-1. 修改 convert_ckpt.sh的base_dir，config_path，tokenizer_path
-2. 修改 tasks用英文逗号,分隔子任务。可以先测试下我默认的=piqa,hellaswag,triviaqa
-3. 这个脚本是单机取评估base_dir下的ckpt。如果有多机，把ckpt分到不同的base_dir下，多机跑快点
-4. 任务比较吃cpu
