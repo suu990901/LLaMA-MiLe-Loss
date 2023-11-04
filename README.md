@@ -20,7 +20,7 @@ bash make_data.sh
 bash merge_split_data.sh
 ```
 
-### Pre-traing
+### Pre-training
 
 We train a 436M model using 16 GPUs, a 1.2B model using 32 GPUs, and a 6.7B model using 128 GPUs.
 ```
@@ -79,3 +79,14 @@ cd lm-evaluation-harness
 python main.py --model hf-causal --model_args pretrained=${model_path} --tasks ${tasks} --batch_size {batch_size} --num_fewshot ${shot} --device cuda:${gpu} 
 ```
 For more evaluation details, please refer to [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness).
+
+## Citation
+If you find our work useful, please consider to cite our paper.
+```
+@article{su2023infoentropy,
+  title={InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models},
+  author={Su, Zhenpeng and Wu, Xing and Bai, Xue and Lin, Zijia and Chen, Hui and Ding, Guiguang and Zhou, Wei and Hu, Songlin},
+  journal={arXiv preprint arXiv:2310.19531},
+  year={2023}
+}
+```
