@@ -1,5 +1,5 @@
 # InfoEntropy Loss
-InfoEntropy Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Details can be found in [InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models](https://arxiv.org/abs/2310.19531).
+InfoEntropy Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Details can be found in [InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models](https://arxiv.org/abs/2310.19531). we train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed InfoEntropy Loss can gain consistent performance improvement on downstream benchmarks.
 
 ## Dependencies
 
