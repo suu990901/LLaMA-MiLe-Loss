@@ -1,9 +1,9 @@
 # InfoEntropy Loss
-InfoEntropy Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Details can be found in [InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models](https://arxiv.org/abs/2310.19531). we train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed InfoEntropy Loss can gain consistent performance improvement on downstream benchmarks.
+InfoEntropy Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Details can be found in [InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models](https://arxiv.org/abs/2310.19531). We train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed InfoEntropy Loss can gain consistent performance improvement on downstream benchmarks.
 
 ## Dependencies
 
-Dependencies can be installed by running codes below. 
+Dependencies can be installed by running the codes below. 
 ```
 pip install -r requirements.txt
 ```
@@ -28,7 +28,7 @@ bash run_entropy_468M.sh
 bash run_entropy_1B.sh
 bash run_entropy_7B.sh
 ```
-Among them, run_entropy_468M.sh, run_entropy_1B.sh, and run_entropy_7B.sh correspond to the startup scripts for the 468M, 1.2B, and 6.7B models, respectively. Specifically, the contents of run_entropy_7B.sh are as follows.
+Among them, run_entropy_468M.sh, run_entropy_1B.sh, and run_entropy_7B.sh, correspond to the startup scripts for the 468M, 1.2B, and 6.7B models, respectively. Specifically, the contents of run_entropy_7B.sh are as follows.
 ```
 ip=$1
 rank=$2
@@ -68,7 +68,7 @@ wandb online
 
 ### Evaluation
 
-We use toolkit [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) to evaluate zero-shot and few-shot performance. Since we are using DeepSpeed, for evaluation, we need to run zero_to_fp32.py to extract fp32 consolidated weights from a DeepSpeed checkpoints. zero_to_fp32.py is saved automatically by Deepspeed, and you will find it in the model's save directory.
+We use toolkit [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) to evaluate zero-shot and few-shot performance. Since we are using DeepSpeed, for evaluation, we need to run zero_to_fp32.py to extract fp32 consolidated weights from a DeepSpeed checkpoint. zero_to_fp32.py is saved automatically by Deepspeed, and you will find it in the model's save directory.
 ```
 python zero_to_fp32.py ${model_path}
 cp configs/model_configs/7B.json ${model_path}/config.json
