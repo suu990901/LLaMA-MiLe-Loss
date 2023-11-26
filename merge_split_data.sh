@@ -1,3 +1,4 @@
+# Divide each dataset into smaller shards to ensure faster data loading during the pre-training.
 SPLIT="train" # Only the training data needs to be divided.
 
 for PILE_DOMAIN in "ArXiv" "DM_Mathematics" "Enron_Emails" "EuroParl" "FreeLaw" "Github"  ; do
