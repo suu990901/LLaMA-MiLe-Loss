@@ -70,7 +70,7 @@ wandb online
 
 We use toolkit [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) to evaluate zero-shot and few-shot performance. Since we are using DeepSpeed, for evaluation, we need to run zero_to_fp32.py to extract fp32 consolidated weights from a DeepSpeed checkpoint. zero_to_fp32.py is saved automatically by Deepspeed, and you will find it in the model's save directory.
 ```
-python zero_to_fp32.py ${deepspeed_ckpt_path} ${model_path}
+python zero_to_fp32.py ${deepspeed_ckpt_path} ${model_path}/pytorch_model.bin
 cp configs/model_configs/7B.json ${model_path}/config.json
 ```
 Then you can evaluate the model as follows:
