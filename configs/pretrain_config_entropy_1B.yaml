@@ -1,6 +1,6 @@
 data:
   mode: "pretrain"
-  tokenizer_model_path: "/nlp_group/suzhenpeng/Llama-InfoEntropy/configs/tokenizer_models"
+  tokenizer_model_path: "configs/tokenizer_models"
   domain_config_path: "configs/pile_sampling_rates.json"
   dataset_dir: "./proc_pile_2048"
   dataset_name: "pile"

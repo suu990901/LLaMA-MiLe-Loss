@@ -15,10 +15,10 @@ not even bother with the train set.
 
 Homepage: https://ai.google.com/research/NaturalQuestions
 """
-import json
-from lm_eval.base import Task, GenerateTask
-import re
-import string
+from lm_eval.base import Task
+from itertools import islice
+
+
 _CITATION = """
 @article{47761,
     title={Natural Questions: a Benchmark for Question Answering Research},
@@ -29,73 +29,10 @@ _CITATION = """
 """
 
 
-#移除全部的在string.punctuation中的标点符号
-def replace_all(text):
-    for punctuation in string.punctuation:
-        text=text.replace(punctuation, '')
-    return text
-
-#移除全部的冠词
-def remove_articles(text):
-    #冠词的列表
-    articles=['an ','a ','the ','some ']
-    for article in articles:
-        if text.startswith(article):
-            text=text[len(article):]
-            break
-    return text
-
-def normalize(text):
-    text=text.strip().lower()
-    #移除所有符号
-    text=replace_all(text).strip()
-    #移除冠词
-    # text=remove_articles(text).strip()
-    #移除连续空格
-    text=re.sub('\s+',' ',text)
-    return text
-
-
-class NaturalQs(GenerateTask):
+class NaturalQs(Task):
     VERSION = 0
     DATASET_PATH = "natural_questions"
     DATASET_NAME = None
-    STOP_FLAGS = [60,'\n']
-    Save=[]
-    def download(self, data_dir=None, cache_dir=None, download_mode=None):
-        # print('downloading')
-        data=[]
-        with open('/nlp_group/zhangyusong/eval_llm/datasets/natural-questions/nq_open/NQ-open.dev.jsonl','r') as f:
-            val_data=[json.loads(line) for line in f]
-        with open('/nlp_group/zhangyusong/eval_llm/datasets/natural-questions/nq_open/NQ-open.train.jsonl','r') as f:
-            train_data=[json.loads(line) for line in f]
-        assert len(val_data)==3610
-        assert len(train_data)==87925
-        #构建
-        val_prompts=[]
-        for idx in range(len(val_data)):
-            temp={
-                "id":idx,
-                "raw_question":val_data[idx]['question'],
-                "label": val_data[idx]['answer']
-            }
-            val_prompts.append(temp)
-        train_prompts=[]
-        for idx in range(len(train_data)):
-            temp={
-                "id":idx,
-                "raw_question":train_data[idx]['question'],
-                "label": train_data[idx]['answer']
-            }
-            train_prompts.append(temp)
-        self.dataset = {"validation": val_prompts, "train": train_prompts}
-
-    #用于生成Q:的部分
-    def doc_to_text(self, doc):
-        return "Q: " + doc["raw_question"] +"?"
-    #few-shot,用于生成A:的部分
-    def doc_to_target(self, doc):
-        return "A: " + doc["label"][0]
 
     def has_training_docs(self):
         return True
@@ -105,71 +42,66 @@ class NaturalQs(GenerateTask):
 
     def has_test_docs(self):
         return False
-    
+
     def training_docs(self):
-        return self.dataset["train"]
+        # Cache training for faster few-shot.
+        # Data is too large to fit in memory.
+        if self._training_docs is None:
+            self._training_docs = list(self.dataset["train"])
+        return self._training_docs
 
     def validation_docs(self):
         return self.dataset["validation"]
 
+    def fewshot_examples(self, k, rnd):
+        # Data is too large to fit in memory. We just sample from the first bit.
+        if self._training_docs is None:
+            self._training_docs = list(islice(self.training_docs(), 0, 100000))
 
-    def fewshot_context(
-        self, doc, num_fewshot, rnd=None, description="Answer these questions:"
-    ):
-        """Returns a fewshot context string that is made up of a prepended description
-        (if provided), the `num_fewshot` number of examples, and an appended prompt example.
+        return rnd.sample(self._training_docs, k)
 
-        :param doc: str
+    def doc_to_text(self, doc):
+        return "Q: " + doc["question"]["text"] + "\n\n" + "A:"
+
+    def should_decontaminate(self):
+        return True
+
+    def doc_to_decontamination_query(self, doc):
+        return doc["question"]["text"]
+
+    def doc_to_target(self, doc):
+        # There's a short answer and a long answer. Based on the paper, I'm using the long answer.
+        # short_answer = doc["annotations"]["short_answers"][0]["text"]
+        long_answer_start = doc["annotations"]["long_answer"][0]["start_token"]
+        long_answer_end = doc["annotations"]["long_answer"][0]["end_token"]
+        long_answer_span = doc["document"]["tokens"]["token"][
+            long_answer_start:long_answer_end
+        ]
+        long_answer_is_html = doc["document"]["tokens"]["is_html"][
+            long_answer_start:long_answer_end
+        ]
+        long_answer_chars = [
+            tok
+            for (tok, is_html) in zip(long_answer_span, long_answer_is_html)
+            if not is_html
+        ]
+        long_answer = " ".join(long_answer_chars)
+        return long_answer  # Replace with short_answer[0] for short answer
+
+    def construct_requests(self, doc, ctx):
+        """Uses RequestFactory to construct Requests and returns an iterable of
+        Requests which will be sent to the LM.
+
+        :param doc:
             The document as returned from training_docs, validation_docs, or test_docs.
-        :param num_fewshot: int
-            The number of fewshot examples to provide in the returned context string.
-        :param rnd: random.Random
-            The pseudo-random number generator used to randomly sample examples.
-            WARNING: This is currently a required arg although it's optionalized with a default `None`.
-        :param description: str
-            The task's description that will be prepended to the fewshot examples.
-        :returns: str
-            The fewshot context.
+        :param ctx: str
+            The context string, generated by fewshot_context. This includes the natural
+            language description, as well as the few shot examples, and the question
+            part of the document for `doc`.
         """
-        assert (
-            rnd is not None
-        ), "A `random.Random` generator argument must be provided to `rnd`"
+        # TODO: implement evaluation.
+        raise NotImplementedError("Evaluation not implemented")
 
-        description = description + "\n\n" if description else ""
-
-        if num_fewshot == 0:
-            labeled_examples = ""
-        else:
-            # for sets with no training docs, draw from other set *but ensure no overlap with current doc*
-            if self.has_training_docs():
-                fewshotex = self.fewshot_examples(k=num_fewshot, rnd=rnd)
-            else:
-                if self._fewshot_docs is None:
-                    self._fewshot_docs = list(
-                        self.validation_docs()
-                        if self.has_validation_docs()
-                        else self.test_docs()
-                    )
-
-                fewshotex = rnd.sample(self._fewshot_docs, num_fewshot + 1)
-
-                # get rid of the doc that's the one we're evaluating, if it's in the fewshot
-                fewshotex = [x for x in fewshotex if x != doc][:num_fewshot]
-
-            labeled_examples = (
-                "\n".join(
-                    [
-                        self.doc_to_text(doc) +'\n' + self.doc_to_target(doc)
-                        for doc in fewshotex
-                    ]
-                )
-                + "\n"
-            )
-
-        example = self.doc_to_text(doc)+"\nA:"
-        return description + labeled_examples + example
-
-    
     def process_results(self, doc, results):
         """Take a single document and the LM results and evaluates, returning a
         dict where keys are the names of submetrics and values are the values of
@@ -181,22 +113,22 @@ class NaturalQs(GenerateTask):
             The results of the requests created in construct_requests.
         """
         # TODO: implement evaluation.
-        def compare(model_output,ground_truths):
-            if model_output in ground_truths:
-                return 1
-            else:
-                return 0
-        model_output = normalize(results[0])
-        ground_truths=list(map(normalize,doc["label"]))
-        exactly_match = compare(model_output, ground_truths)
-        doc['response'] = results[0]
-        doc['answer'] = doc["label"]
-        doc['extracted'] = model_output
-        doc['score'] = str(exactly_match)
+        raise NotImplementedError("Evaluation not implemented")
 
-        return {'acc': exactly_match}
+    def aggregation(self):
+        """
+        :returns: {str: [float] -> float}
+            A dictionary where keys are the names of submetrics and values are
+            functions that aggregate a list of metrics
+        """
+        # TODO: implement evaluation.
+        raise NotImplementedError("Evaluation not implemented")
 
-
-if __name__=="__main__":
-    task=NaturalQs()
-    task.download()
+    def higher_is_better(self):
+        """
+        :returns: {str: bool}
+            A dictionary where keys are the names of submetrics and values are
+            whether a higher value of the submetric is better
+        """
+        # TODO: implement evaluation.
+        raise NotImplementedError("Evaluation not implemented")

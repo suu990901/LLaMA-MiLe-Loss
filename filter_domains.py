@@ -46,7 +46,7 @@ def pile_transform(tokenizer, max_length, seed=None):
 def main():
     # parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pile_path_dir', type=str, default='/nlp_group/liupeng15/pile')
+    parser.add_argument('--pile_path_dir', type=str, default='/root/pile')
     # parser.add_argument('--output_dir', type=str, default='./proc_pile_new')
     parser.add_argument('--intermediate_dir', type=str, default='./cache_debug/pile_preprocessed_tmp')
     parser.add_argument('--domain', type=str, default='BookCorpus2')
@@ -55,7 +55,7 @@ def main():
     parser.add_argument('--max_length', type=int, default=1024)
     parser.add_argument('--nproc', type=int, default=8)
     parser.add_argument('--split', type=str, default='validation')
-    parser.add_argument('--tokenizer', type=str, default='/nlp_group/decapoda-research/llama-13b-hf')
+    parser.add_argument('--tokenizer', type=str, default='/root/llama-7b-hf')
     parser.add_argument('--cache_dir', type=str, default='./cache_debug')
     parser.add_argument('--seed', type=int, default=111)
     parser.add_argument('--num_shards', type=int, default=8)
