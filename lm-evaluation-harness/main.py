@@ -11,7 +11,7 @@ logging.getLogger("openai").setLevel(logging.WARNING)
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", required=True)
-    parser.add_argument("--model_args", default="pretrained=/nlp_group/wuxing/suzhenpeng/Open-Llama-2048/models/saved_ckpt_7b/entropy_lossgamma1warmup_ratio0schedulernoneversionseq2048/ckpt25000_old/pytorch_model")
+    parser.add_argument("--model_args", default="pretrained=pytorch_model")
     parser.add_argument("--tasks", default=None, choices=utils.MultiChoice(tasks.ALL_TASKS))
     parser.add_argument("--provide_description", action="store_true")
     parser.add_argument("--num_fewshot", type=int, default=0)
