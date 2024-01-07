@@ -21,7 +21,7 @@ flags.DEFINE_string(
     "gamma", None, "gamma for Loss"
 )
 flags.DEFINE_string(
-    "version", None, "runing version"
+    "version", None, "running version"
 )
 def main(argv):
     with open(FLAGS.train_config, "r", encoding="utf-8") as fp:
