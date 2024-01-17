@@ -128,7 +128,7 @@ def construct_train_dataset(
                     seed=seed,
                     stopping_strategy='all_exhausted'
                 )
-    # For doremi datasets
+
     if 'domain_id' in full_dataset.column_names:
         full_dataset = full_dataset.remove_columns('domain_id')
     
