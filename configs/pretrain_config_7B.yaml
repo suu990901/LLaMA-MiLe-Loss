@@ -33,5 +33,5 @@ log_interval: 5
 eval_interval: 5000
 save_interval: 1000
 work_dir: "models/saved_ckpt_7B/crossentropy"
-project_name: "LLAMA_InfoEntropy_7B_2048"
+project_name: "LLAMA_MiLe_7B_2048"
 run_name: "7B_crossentropy"

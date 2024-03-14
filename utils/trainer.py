@@ -13,9 +13,9 @@ import torch.nn.functional as F
 import torch.distributed as dist
 import math
 import os
-class InfoEntropyLoss(nn.Module):
+class MiLeLoss(nn.Module):
     def __init__(self, gamma=1.0,reduction='mean'):
-        super(InfoEntropyLoss, self).__init__()
+        super(MiLeLoss, self).__init__()
         self.base_gamma = gamma
         self.reduction = reduction
         self.loss_fct = nn.CrossEntropyLoss(reduction='none', ignore_index=-100)
@@ -122,7 +122,7 @@ class Trainer:
             self.train_loss = FocalLoss(gamma=gamma)
         elif config["loss"]["use_loss"] == "entropy_loss":
             gamma = config["loss"]["gamma"]
-            self.train_loss = InfoEntropyLoss(gamma=gamma)
+            self.train_loss = MiLeLoss(gamma=gamma)
 
     def get_model_info(self):
         with torch.no_grad():

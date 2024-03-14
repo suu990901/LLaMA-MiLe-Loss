@@ -33,5 +33,5 @@ log_interval: 5
 eval_interval: 5000
 save_interval: 1000
 work_dir: "models/saved_ckpt_1B/entropy_loss"
-project_name: "LLAMA_InfoEntropy_1B_1024"
+project_name: "LLAMA_MiLe_1B_1024"
 run_name: "1B_entropy"
