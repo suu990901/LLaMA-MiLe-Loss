@@ -1,5 +1,5 @@
 # MiLe Loss
-MiLe Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Details can be found in [a New Loss for Mitigating the Bias of Learning Difficulties in Generative Language Models](https://arxiv.org/abs/2310.19531). We train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed MiLe Loss can gain consistent performance improvement on downstream benchmarks.
+MiLe Loss can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. We train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed MiLe Loss can gain consistent performance improvement on downstream benchmarks. Details can be found in [a New Loss for Mitigating the Bias of Learning Difficulties in Generative Language Models](https://arxiv.org/abs/2310.19531)(NAACL 2024).
 
 ## Dependencies
 
