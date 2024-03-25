@@ -83,8 +83,8 @@ For more evaluation details, please refer to [lm-evaluation-harness](https://git
 ## Citation
 If you find our work useful, please consider to cite our paper.
 ```
-@article{su2023MiLe,
-  title={MiLe Loss to Mitigate Bias of Learning Difficulties for Generative Language Models},
+@article{su2023infoentropy,
+  title={InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models},
   author={Su, Zhenpeng and Wu, Xing and Bai, Xue and Lin, Zijia and Chen, Hui and Ding, Guiguang and Zhou, Wei and Hu, Songlin},
   journal={arXiv preprint arXiv:2310.19531},
   year={2023}
