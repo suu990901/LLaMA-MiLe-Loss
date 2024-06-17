@@ -83,10 +83,26 @@ For more evaluation details, please refer to [lm-evaluation-harness](https://git
 ## Citation
 If you find our work useful, please consider to cite our paper.
 ```
-@article{su2023infoentropy,
-  title={InfoEntropy Loss to Mitigate Bias of Learning Difficulties for Generative Language Models},
-  author={Su, Zhenpeng and Wu, Xing and Bai, Xue and Lin, Zijia and Chen, Hui and Ding, Guiguang and Zhou, Wei and Hu, Songlin},
-  journal={arXiv preprint arXiv:2310.19531},
-  year={2023}
+@inproceedings{su-etal-2024-mile,
+    title = "{M}i{L}e Loss: a New Loss for Mitigating the Bias of Learning Difficulties in Generative Language Models",
+    author = "Su, Zhenpeng  and
+      Lin, Zijia  and
+      Baixue, Baixue  and
+      Chen, Hui  and
+      Hu, Songlin  and
+      Zhou, Wei  and
+      Ding, Guiguang  and
+      W, Xing",
+    editor = "Duh, Kevin  and
+      Gomez, Helena  and
+      Bethard, Steven",
+    booktitle = "Findings of the Association for Computational Linguistics: NAACL 2024",
+    month = jun,
+    year = "2024",
+    address = "Mexico City, Mexico",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.findings-naacl.18",
+    pages = "250--262",
+    abstract = "Generative language models are usually pre-trained on large text corpus via predicting the next token (i.e., sub-word/word/phrase) given the previous ones. Recent works have demonstrated the impressive performance of large generative language models on downstream tasks. However, existing generative language models generally neglect an inherent challenge in text corpus during training, i.e., the imbalance between frequent tokens and infrequent ones. It can lead a language model to be dominated by common and easy-to-learn tokens, thereby overlooking the infrequent and difficult-to-learn ones. To alleviate that, we propose a **MiLe Loss** function for **mi**tigating the bias of **le**arning difficulties with tokens. During training, it can dynamically assess the learning difficulty of a to-be-learned token, according to the information entropy of the corresponding predicted probability distribution over the vocabulary. Then it scales the training loss adaptively, trying to lead the model to focus more on the difficult-to-learn tokens. On the Pile dataset, we train generative language models at different scales of 468M, 1.2B, and 6.7B parameters. Experiments reveal that models incorporating the proposed MiLe Loss can gain consistent performance improvement on downstream benchmarks.",
 }
 ```
